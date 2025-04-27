@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><title>Transaction History</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+</head>
+<body>
+<h2>Transaction History</h2>
+<ul>
+    <li th:each="txn : ${transactions}" th:text="${txn}"></li>
+</ul>
+<a href="/account-menu">Back to Menu</a>
+</body>
+</html>

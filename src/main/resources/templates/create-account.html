@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Create Account</title>
+  <link rel="stylesheet" th:href="@{/css/styles.css}" />
+</head>
+<body>
+<h2>Create Account</h2>
+
+<form th:action="@{/create-account}" th:object="${account}" method="post">
+  <label>Account Number:</label>
+  <input type="text" th:field="*{accountNumber}" required/><br/><br/>
+
+  <label>Password:</label>
+  <input type="password" th:field="*{password}" required/><br/><br/>
+
+  <label>Account Type:</label>
+  <select th:field="*{accountType}" required>
+    <option value="">-- Select Account Type --</option>
+    <option value="savings">Savings</option>
+    <option value="current">Current</option>
+  </select><br/><br/>
+
+  <button type="submit">Create</button>
+</form>
+
+<div th:if="${error}" th:text="${error}" style="color:red; margin-top:10px;"></div>
+
+</body>
+</html>

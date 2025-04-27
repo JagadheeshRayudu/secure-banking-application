@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><title>Admin Dashboard</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+</head>
+<body>
+<h2>All Accounts</h2>
+<table border="1">
+    <tr>
+        <th>Account Number</th>
+        <th>Balance</th>
+        <th>Account Type</th>
+    </tr>
+    <tr th:each="account : ${accounts}">
+        <td th:text="${account.accountNumber}"></td>
+        <td th:text="${account.balance}"></td>
+        <td th:text="${account.accountType}"></td>
+    </tr>
+</table>
+</body>
+</html>

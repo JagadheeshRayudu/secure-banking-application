@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Account Menu</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+</head>
+<body>
+<h2>Welcome</h2>
+
+<p>Account Number: <span th:text="${account.accountNumber}"></span></p>
+<p>Balance: $<span th:text="${account.balance}"></span></p>
+
+<!-- Account Type Dropdown -->
+<form action="#" method="post">
+    <label for="accountType">Account Type:</label>
+    <select id="accountType" name="accountType">
+        <option value="savings" th:selected="${account.accountType == 'savings'}">Savings</option>
+        <option value="current" th:selected="${account.accountType == 'current'}">Current</option>
+    </select>
+</form>
+
+<br/>
+
+<!-- Other options -->
+<a href="/deposit">Deposit</a><br/>
+<a href="/withdraw">Withdraw</a><br/>
+<a href="/change-password">Change Password</a><br/>
+<a href="/transaction-history">Transaction History</a><br/>
+<a href="/">Logout</a><br/>
+
+</body>
+</html>
