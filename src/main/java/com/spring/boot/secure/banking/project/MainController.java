@@ -14,10 +14,12 @@ public class MainController {
     private final String ADMIN_PASSWORD = "admin123";
 
     private Account loggedInAccount = null;
+    private final AccountRepository accountRepository;
 
 
-    public MainController(AccountService accountService) {
+    public MainController(AccountService accountService, AccountRepository accountRepository) {
         this.accountService = accountService;
+        this.accountRepository = accountRepository;
     }
 
     @GetMapping("/")
@@ -126,6 +128,57 @@ public class MainController {
     public String transactionHistory(Model model) {
         model.addAttribute("transactions", loggedInAccount.getTransactionHistory());
         return "transaction-history";
+    }
+
+    @GetMapping("/transfer")
+    public String showTransferPage(Model model) {
+        model.addAttribute("recipientAccountNumber", "");
+        model.addAttribute("amount", 0);
+        return "transfer";
+    }
+
+    @PostMapping("/transfer")
+    public String transferMoney(
+            @RequestParam("recipientAccountNumber") String recipientAccountNumber,
+            @RequestParam("amount") double amount,
+            Model model
+    ) {
+        // Assuming currentAccount is fetched from session or login
+        Account currentAccount = getCurrentLoggedInAccount();
+
+        Account recipient = accountRepository.findByAccountNumber(recipientAccountNumber);
+        if (recipient == null) {
+            model.addAttribute("error", "Recipient account not found!");
+            return "transfer";
+        }
+
+        if (currentAccount.getBalance() >= amount) {
+            currentAccount.transfer(recipient, amount);
+            accountRepository.save(currentAccount);
+            accountRepository.save(recipient);
+            model.addAttribute("success", "Transfer successful!");
+        } else {
+            model.addAttribute("error", "Insufficient balance!");
+        }
+
+        return "transfer";
+    }
+
+    @GetMapping("/apply-interest")
+    public String applyInterest(Model model) {
+        Account currentAccount = getCurrentLoggedInAccount();
+
+        currentAccount.applyInterest();
+        accountRepository.save(currentAccount);
+
+        model.addAttribute("message", "Interest applied successfully!");
+        return "apply-interest";
+    }
+
+    // Helper method (pseudo) - you should have an actual login mechanism
+    private Account getCurrentLoggedInAccount() {
+        // Fetch logged-in account from session or context
+        return loggedInAccount;
     }
 
 }
